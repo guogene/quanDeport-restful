@@ -3,11 +3,12 @@
 """
 
 from flask_restful import Resource, abort
+from flask import g
 from app.code import Code
 from apiModels.UserModel import User
 from app.util import make_result
-from .parser import IdTestApi, NameTestApi, LoginApi
-from .token_auth import auth
+from .parser import IdTestApi, LoginApi
+from .token_auth import auth, generate_auth_token
 
 
 class Test(Resource):
@@ -22,8 +23,8 @@ class PostTest(Resource):
 
     @auth.login_required
     def post(self):
-        rep = NameTestApi().rep.parse_args(strict=True)
-        name = rep.get('name')
+        user_id = g.user_id
+        name = User.query.filter_by(id=user_id).first().user_name
         return make_result(data={"name": name + "--真实玩家"})
 
 
@@ -39,4 +40,5 @@ class Login(Resource):
         elif user.check_password(password) is False:
             abort(make_result(code=Code.LOGIN_FAILED))
         else:
-            return make_result(data={"token": 'this_is_token_1'})
+            token = generate_auth_token(user.id)
+            return make_result(data={"token": token.decode()})

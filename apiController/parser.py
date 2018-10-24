@@ -14,7 +14,7 @@ class IdTestApi:
 class NameTestApi:
     def __init__(self):
         self.rep = RequestParser()
-        self.rep.add_argument("name", type=str, location="json", required=True)
+        self.rep.add_argument("name", type=str, location="json", required=False)
         super(NameTestApi, self).__init__()
 
 class LoginApi:
