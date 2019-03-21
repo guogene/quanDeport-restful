@@ -8,6 +8,7 @@ from app.util import make_result
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
 
+
 SECRET_KEY = 'LXDJEOX,SOEFHISO13'
 EXPIRATION_TIME = 3600
 auth = HTTPTokenAuth(scheme="Token-")
